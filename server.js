@@ -1,32 +1,33 @@
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
-const db = require('./db');
 require('dotenv').config();
+
+const db = require('./db'); // ✅ Import the database module
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from the "public" folder
-app.use(express.static('public'));
+// Serve static frontend files
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
 
-// API route for contact form
+// Routes
 app.post('/api/contact', (req, res) => {
   const { name, email, message } = req.body;
-
   if (!name || !email || !message) {
-    return res.status(400).json({ error: 'Please fill all fields' });
+    return res.status(400).json({ error: 'All fields are required' });
   }
 
-  const sql = 'INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)';
+ const sql = "INSERT INTO messages (name, email, message) VALUES (?, ?, ?)";
+
   db.query(sql, [name, email, message], (err, result) => {
     if (err) {
-      console.error('Database insert error:', err);
+      console.error("Database error:", err);
       return res.status(500).json({ error: 'Database error' });
     }
     res.json({ success: true, message: 'Message sent successfully!' });
