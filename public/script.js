@@ -4,7 +4,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
   const formData = new FormData(this);
   const data = Object.fromEntries(formData.entries());
 
-  const response = await fetch('/api/contact', {
+  const response = await fetch("/api/contact", {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
