@@ -1,40 +1,47 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
-const db = require('./db'); // ✅ Import the database module
+const db = require('./db'); // ✅ PostgreSQL db module
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors());
+// ✅ Allow frontend to access backend (CORS for Netlify)
+app.use(cors({
+  origin: 'https://courageous-phoenix-366ea2.netlify.app/', // 🔁 Replace with your real frontend Netlify URL
+  methods: ['GET', 'POST'],
+  credentials: true,
+}));
+
+// ✅ Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static frontend files
-const path = require('path');
+// ✅ Serve static files (if needed)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Routes
-app.post('/api/contact', (req, res) => {
+// ✅ API Route
+app.post('/api/contact', async (req, res) => {
   const { name, email, message } = req.body;
+
   if (!name || !email || !message) {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
- const sql = "INSERT INTO messages (name, email, message) VALUES (?, ?, ?)";
+  try {
+    const query = 'INSERT INTO messages (name, email, message) VALUES ($1, $2, $3)';
+    await db.query(query, [name, email, message]);
 
-  db.query(sql, [name, email, message], (err, result) => {
-    if (err) {
-      console.error("Database error:", err);
-      return res.status(500).json({ error: 'Database error' });
-    }
     res.json({ success: true, message: 'Message sent successfully!' });
-  });
+  } catch (err) {
+    console.error('❌ Database error:', err);
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
-// Start server
+// ✅ Start the server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
