@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "This is the backend for my personal portfolio website built with Node.js and MySQL.",
   "dependencies": {
     "@apollo/client": "^3.13.9",
     "body-parser": "^2.2.0",
@@ -16,6 +17,15 @@
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "graphql": "^16.11.0",
+    "mysql": "^2.18.1",
     "pg": "^8.16.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Subho45/portfolio_backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Subho45/portfolio_backend/issues"
+  },
+  "homepage": "https://github.com/Subho45/portfolio_backend#readme"
 }
