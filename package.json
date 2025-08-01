@@ -10,12 +10,10 @@
   "license": "ISC",
   "description": "This is the backend for my personal portfolio website built with Node.js and MySQL.",
   "dependencies": {
-    "@apollo/client": "^3.13.9",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
-    "graphql": "^16.11.0",
     "mysql": "^2.18.1",
     "pg": "^8.16.3"
   },
