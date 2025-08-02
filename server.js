@@ -1,14 +1,34 @@
+// server.js
+
 const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
+const bodyParser = require('body-parser');
+const pool = require('./db'); // connects to PostgreSQL
 
 const app = express();
-const contactRoute = require('./routes/contact');
+const PORT = process.env.PORT || 3000;
 
-app.use(cors());
-app.use(express.json());
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-app.use('/api/contact', contactRoute);
+// Contact route
+app.post('/contact', async (req, res) => {
+  const { name, email, message } = req.body;
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  try {
+    await pool.query(
+      'INSERT INTO contacts (name, email, message) VALUES ($1, $2, $3)',
+      [name, email, message]
+    );
+    res.status(200).json({ success: true, message: 'Message saved!' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Database error' });
+  }
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
