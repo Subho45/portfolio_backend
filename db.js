@@ -1,18 +1,17 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
-const db = mysql.createConnection({
-  host: 'localhost',
+const connection = mysql.createConnection({
+  host: 'switchyard.proxy.rlwy.net',
+  port: 47326,
   user: 'root',
-  password: '',      // default XAMPP password is blank
-  database: 'mail',
+  password: 'ZaWrQhwChxMXvMMYqqlNEBhTplRbnvXS',
+  database: 'railway'
 });
 
-db.connect((err) => {
+connection.connect((err) => {
   if (err) {
-    console.error('MySQL connection failed:', err);
-  } else {
-    console.log('Connected to MySQL database');
+    console.error('Database connection failed:', err);
+    return;
   }
+  console.log('Connected to Railway MySQL!');
 });
-
-module.exports = db;
