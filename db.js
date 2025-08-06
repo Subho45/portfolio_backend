@@ -1,5 +1,4 @@
-const mysql = require('mysql2');
-
+const mysql = require('mysql');
 const connection = mysql.createConnection({
   host: 'switchyard.proxy.rlwy.net',
   port: 47326,
