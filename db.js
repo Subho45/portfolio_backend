@@ -1,10 +1,12 @@
-const mysql = require('mysql');
+require('dotenv').config();
+const mysql = require('mysql2'); // using mysql2 for better support
+
 const connection = mysql.createConnection({
-  host: 'switchyard.proxy.rlwy.net',
-  port: 47326,
-  user: 'root',
-  password: 'ZaWrQhwChxMXvMMYqqlNEBhTplRbnvXS',
-  database: 'railway'
+  host: process.env.MYSQLHOST,
+  port: process.env.MYSQLPORT,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE
 });
 
 connection.connect((err) => {
@@ -14,3 +16,5 @@ connection.connect((err) => {
   }
   console.log('Connected to Railway MySQL!');
 });
+
+module.exports = connection;
